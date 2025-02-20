@@ -22,7 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import com.example.art_prompt_android.R
+import com.example.art_prompt_android.ui.viewmodel.AuthViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.art_prompt_android.ui.viewmodel.AuthViewModelFactory
 
 @Composable
 fun LoginScreen(onLoginSuccess: () -> Unit) {
@@ -30,6 +34,8 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
     var password by remember { mutableStateOf("") }
     val customPrimaryColor = Color(0xFF0C1844)
     val customBackgroundColor = Color(0xFFF7F7F7)
+    val context = LocalContext.current
+    val authViewModel: AuthViewModel = viewModel(factory = AuthViewModelFactory(context))
 
     Column(
         modifier = Modifier
@@ -72,9 +78,13 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
 
         Button(
             onClick = {
-            /*TODO: implement login logic for now we are logging it*/
-            Log.i("Login", "Email: $email, Password: $password")
-//            loginViewModel.login(email, password)
+//            authViewModel.getCredentials(email, password)
+//            //todo removed this later
+//            Log.i("Auth", "UserId: $authViewModel.first, Token: $authViewModel.second")
+//            if (authViewModel.userId != null && authViewModel.token != null) {
+//                onLoginSuccess()
+//            }
+                onLoginSuccess()
         },
             colors = ButtonDefaults.buttonColors(
                 containerColor = customPrimaryColor
@@ -82,8 +92,4 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
             Text(text = "Login")
         }
     }
-
-//    if (loginViewModel.userId != null && loginViewModel.token != null) {
-//        onLoginSuccess()
-//    }
 }

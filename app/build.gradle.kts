@@ -44,10 +44,16 @@ android {
 }
 
 dependencies {
+    implementation(libs.volley)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
     val composeBom = platform("androidx.compose:compose-bom:2025.01.01")
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
+    val lifecycle_version = "2.8.7"
+    val nav_version = "2.8.7"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -59,6 +65,10 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.10.0")
     implementation("app.rive:rive-android:9.6.5")
     implementation("androidx.startup:startup-runtime:1.1.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version")
+    implementation("androidx.navigation:navigation-compose:$nav_version")
     debugImplementation("androidx.compose.ui:ui-tooling")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

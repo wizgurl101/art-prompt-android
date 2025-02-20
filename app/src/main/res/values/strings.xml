@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">art-prompt-android</string>
+    <string name="title_activity_prompt_screen">PromptScreen</string>
 </resources>
