@@ -57,6 +57,8 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.activity:activity-compose:1.10.0")
+    implementation("app.rive:rive-android:9.6.5")
+    implementation("androidx.startup:startup-runtime:1.1.1")
     debugImplementation("androidx.compose.ui:ui-tooling")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
