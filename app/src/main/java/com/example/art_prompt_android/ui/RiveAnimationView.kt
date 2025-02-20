@@ -1,4 +1,4 @@
-package com.example.art_prompt_android
+package com.example.art_prompt_android.ui
 import androidx.annotation.RawRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
