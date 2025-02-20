@@ -13,6 +13,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -79,16 +80,17 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         Button(
             onClick = {
             authViewModel.getCredentials(email, password)
-            //todo removed this later
-            Log.i("Auth", "UserId: $authViewModel.first, Token: $authViewModel.second")
-            if (authViewModel.userId != null && authViewModel.token != null) {
-                onLoginSuccess()
-            }
         },
             colors = ButtonDefaults.buttonColors(
                 containerColor = customPrimaryColor
             )) {
             Text(text = "Login")
+        }
+    }
+
+    LaunchedEffect(authViewModel.userId, authViewModel.token) {
+        if (authViewModel.userId != null && authViewModel.token != null) {
+            onLoginSuccess()
         }
     }
 }
