@@ -78,13 +78,12 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
 
         Button(
             onClick = {
-//            authViewModel.getCredentials(email, password)
-//            //todo removed this later
-//            Log.i("Auth", "UserId: $authViewModel.first, Token: $authViewModel.second")
-//            if (authViewModel.userId != null && authViewModel.token != null) {
-//                onLoginSuccess()
-//            }
+            authViewModel.getCredentials(email, password)
+            //todo removed this later
+            Log.i("Auth", "UserId: $authViewModel.first, Token: $authViewModel.second")
+            if (authViewModel.userId != null && authViewModel.token != null) {
                 onLoginSuccess()
+            }
         },
             colors = ButtonDefaults.buttonColors(
                 containerColor = customPrimaryColor
