@@ -20,7 +20,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.AccountBox
 
 @Composable
 fun PromptScreen(onNavigateLogout: () -> Unit, onNavigatePhotoGallery: () -> Unit) {
@@ -33,14 +34,14 @@ fun PromptScreen(onNavigateLogout: () -> Unit, onNavigatePhotoGallery: () -> Uni
             ) {
                 IconButton(onClick = onNavigatePhotoGallery) {
                     Icon(
-                        imageVector = Icons.Filled.Done,
+                        imageVector = Icons.Filled.AccountBox,
                         contentDescription = "Photo Gallery"
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(onClick = onNavigateLogout) {
                     Icon(
-                        imageVector = Icons.Default.Done,
+                        imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                         contentDescription = "Logout"
                     )
                 }

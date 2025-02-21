@@ -38,7 +38,14 @@ class MainActivity : AppCompatActivity() {
                             )
                         }
                         composable("photo_gallery") {
-                            PhotoGalleryScreen()
+                            PhotoGalleryScreen(
+                                onNavigateLogout = {
+                                    navController.navigate("login")
+                                },
+                                onNavigatePrompt = {
+                                    navController.navigate("prompt")
+                                }
+                            )
                         }
                     })
             }
