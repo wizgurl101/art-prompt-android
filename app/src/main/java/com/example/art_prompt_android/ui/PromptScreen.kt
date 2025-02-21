@@ -86,7 +86,7 @@ fun PromptScreen(userId: String,
             Text(
                 text = dayPrompt ?: "Generating prompt...",
                 style = MaterialTheme.typography.bodyLarge.copy(
-                    fontSize = 24.sp,
+                    fontSize = 18.sp,
                     color = customPrimaryColor
                 )
             )
