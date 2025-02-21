@@ -8,6 +8,7 @@ import com.example.art_prompt_android.ui.LoginScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.art_prompt_android.ui.PhotoGalleryScreen
 import com.example.art_prompt_android.ui.PromptScreen
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +28,17 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         composable("prompt") {
-                            PromptScreen()
+                            PromptScreen(
+                                onNavigateLogout = {
+                                    navController.navigate("login")
+                                },
+                                onNavigatePhotoGallery = {
+                                    navController.navigate("photo_gallery")
+                                }
+                            )
+                        }
+                        composable("photo_gallery") {
+                            PhotoGalleryScreen()
                         }
                     })
             }
