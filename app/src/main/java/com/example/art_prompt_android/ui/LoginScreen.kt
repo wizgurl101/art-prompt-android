@@ -1,6 +1,5 @@
 package com.example.art_prompt_android.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,7 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.art_prompt_android.ui.viewmodel.AuthViewModelFactory
 
 @Composable
-fun LoginScreen(onLoginSuccess: () -> Unit) {
+fun LoginScreen(onLoginSuccess: (String, String) -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val customPrimaryColor = Color(0xFF0C1844)
@@ -90,7 +89,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
 
     LaunchedEffect(authViewModel.userId, authViewModel.token) {
         if (authViewModel.userId != null && authViewModel.token != null) {
-            onLoginSuccess()
+            onLoginSuccess(authViewModel.userId!!, authViewModel.token!!)
         }
     }
 }
