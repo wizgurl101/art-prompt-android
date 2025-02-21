@@ -1,5 +1,6 @@
 package com.example.art_prompt_android.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,11 +23,28 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import com.example.art_prompt_android.ui.viewmodel.PromptViewModel
+import com.example.art_prompt_android.ui.viewmodel.PromptViewModelFactory
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun PromptScreen(onNavigateLogout: () -> Unit, onNavigatePhotoGallery: () -> Unit) {
+fun PromptScreen(userId: String,
+                 token: String,
+                 onNavigateLogout: () -> Unit,
+                 onNavigatePhotoGallery: () -> Unit
+) {
     val customPrimaryColor = Color(0xFF0C1844)
     val customBackgroundColor = Color(0xFFF7F7F7)
+    val promptViewModel: PromptViewModel = viewModel(factory = PromptViewModelFactory(LocalContext.current))
+
+    LaunchedEffect(Unit) {
+        promptViewModel.getArtPrompt(userId, token)
+    }
+
+    val dayPrompt = promptViewModel.artPrompt ?: "Draw a tree"
+    Log.i("PromptScreen", "Prompt: $dayPrompt")
 
     Scaffold(
         bottomBar = {
@@ -66,7 +84,7 @@ fun PromptScreen(onNavigateLogout: () -> Unit, onNavigatePhotoGallery: () -> Uni
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Prompt of the Day",
+                text = dayPrompt ?: "Generating prompt...",
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontSize = 24.sp,
                     color = customPrimaryColor

@@ -13,9 +13,9 @@ import com.example.art_prompt_android.data.repository.login
 class PromptViewModel(private val context: Context) : ViewModel() {
     var artPrompt by mutableStateOf<String?>(null)
 
-    fun getArtPrompt(userId: String) {
+    fun getArtPrompt(userId: String, token: String) {
         viewModelScope.launch {
-            artPrompt = getPrompt(context, userId)
+            artPrompt = getPrompt(context, userId, token)
         }
     }
 }

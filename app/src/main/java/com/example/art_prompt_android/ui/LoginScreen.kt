@@ -24,18 +24,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.art_prompt_android.R
-import com.example.art_prompt_android.ui.viewmodel.PromptViewModel
+import com.example.art_prompt_android.ui.viewmodel.AuthViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.art_prompt_android.ui.viewmodel.AuthViewModelFactory
 
 @Composable
-fun LoginScreen(onLoginSuccess: () -> Unit) {
+fun LoginScreen(onLoginSuccess: (String, String) -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val customPrimaryColor = Color(0xFF0C1844)
     val customBackgroundColor = Color(0xFFF7F7F7)
     val context = LocalContext.current
-    val authViewModel: PromptViewModel = viewModel(factory = AuthViewModelFactory(context))
+    val authViewModel: AuthViewModel = viewModel(factory = AuthViewModelFactory(context))
 
     Column(
         modifier = Modifier
@@ -89,7 +89,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
 
     LaunchedEffect(authViewModel.userId, authViewModel.token) {
         if (authViewModel.userId != null && authViewModel.token != null) {
-            onLoginSuccess()
+            onLoginSuccess(authViewModel.userId!!, authViewModel.token!!)
         }
     }
 }
