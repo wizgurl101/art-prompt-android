@@ -1,5 +1,7 @@
 package com.example.art_prompt_android.ui
 
+import android.content.Intent
+import android.provider.MediaStore
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +25,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import com.example.art_prompt_android.ui.viewmodel.PromptViewModel
@@ -37,7 +40,8 @@ fun PromptScreen(userId: String,
 ) {
     val customPrimaryColor = Color(0xFF0C1844)
     val customBackgroundColor = Color(0xFFF7F7F7)
-    val promptViewModel: PromptViewModel = viewModel(factory = PromptViewModelFactory(LocalContext.current))
+    val context = LocalContext.current
+    val promptViewModel: PromptViewModel = viewModel(factory = PromptViewModelFactory(context))
 
     LaunchedEffect(Unit) {
         promptViewModel.getArtPrompt(userId, token)
@@ -66,10 +70,13 @@ fun PromptScreen(userId: String,
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /* Handle FAB click */ }) {
+            FloatingActionButton(onClick = {
+                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                context.startActivity(cameraIntent)
+            }) {
                 Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add"
+                    imageVector = Icons.Default.AddCircle,
+                    contentDescription = "Take a photo"
                 )
             }
         },
