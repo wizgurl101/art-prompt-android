@@ -32,6 +32,7 @@ import com.example.art_prompt_android.utils.getAllPhotos
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.items
+import coil.compose.AsyncImage
 
 @Composable
 fun PhotoGalleryScreen(onNavigateLogout: () -> Unit, onNavigatePrompt: () -> Unit) {
@@ -72,24 +73,14 @@ fun PhotoGalleryScreen(onNavigateLogout: () -> Unit, onNavigatePrompt: () -> Uni
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(
-                text = "Photo Gallery",
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontSize = 24.sp,
-                    color = customPrimaryColor
-                )
-            )
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = 128.dp),
                 modifier = Modifier.padding(16.dp)
             ) {
                 items(photos) { uri ->
-                    Text(
-                        text = uri.toString(),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontSize = 16.sp,
-                            color = customPrimaryColor
-                        )
+                    AsyncImage(
+                        model = uri.toString(),
+                        contentDescription = null,
                     )
                 }
             }
