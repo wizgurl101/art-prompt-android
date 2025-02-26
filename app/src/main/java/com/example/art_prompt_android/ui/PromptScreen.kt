@@ -1,11 +1,19 @@
 package com.example.art_prompt_android.ui
 
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.provider.MediaStore
+import android.Manifest
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
@@ -22,15 +30,30 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.material.icons.Icons
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material3.Button
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.art_prompt_android.ui.viewmodel.PromptViewModel
 import com.example.art_prompt_android.ui.viewmodel.PromptViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.art_prompt_android.utils.savePhotoToMediaStore
+import kotlinx.coroutines.launch
 
 @Composable
 fun PromptScreen(userId: String,
@@ -42,13 +65,36 @@ fun PromptScreen(userId: String,
     val customBackgroundColor = Color(0xFFF7F7F7)
     val context = LocalContext.current
     val promptViewModel: PromptViewModel = viewModel(factory = PromptViewModelFactory(context))
+    val coroutineScope = rememberCoroutineScope()
+    var capturedImage by remember { mutableStateOf<Bitmap?>(null) }
+    var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         promptViewModel.getArtPrompt(userId, token)
     }
 
-    val dayPrompt = promptViewModel.artPrompt ?: "Draw a tree"
-    Log.i("PromptScreen", "Prompt: $dayPrompt")
+    val dayPrompt = promptViewModel.artPrompt ?: "Generating prompt..."
+
+    val takePictureLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val photo = result.data?.extras?.get("data") as Bitmap
+            capturedImage = photo
+            showDialog = true
+            coroutineScope.launch {
+                val resultSaved = savePhotoToMediaStore(context, capturedImage!!)
+                Log.i("PhotoSaved", "Photo saved to: $resultSaved")
+            }
+        }
+    }
+
+    fun requestCameraPermission() {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(context as Activity, arrayOf(Manifest.permission.CAMERA), 0)
+        } else {
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            takePictureLauncher.launch(cameraIntent)
+        }
+    }
 
     Scaffold(
         bottomBar = {
@@ -71,8 +117,7 @@ fun PromptScreen(userId: String,
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                context.startActivity(cameraIntent)
+                requestCameraPermission()
             }) {
                 Icon(
                     imageVector = Icons.Default.AddCircle,
