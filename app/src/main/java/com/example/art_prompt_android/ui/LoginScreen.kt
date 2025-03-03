@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -36,6 +37,8 @@ fun LoginScreen(onLoginSuccess: (String, String) -> Unit) {
     val customBackgroundColor = Color(0xFFF7F7F7)
     val context = LocalContext.current
     val authViewModel: AuthViewModel = viewModel(factory = AuthViewModelFactory(context))
+    var loginFailed by remember { mutableStateOf(false) }
+    var didUserSignIn by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -78,6 +81,8 @@ fun LoginScreen(onLoginSuccess: (String, String) -> Unit) {
 
         Button(
             onClick = {
+            didUserSignIn = true
+            loginFailed = false
             authViewModel.getCredentials(email, password)
         },
             colors = ButtonDefaults.buttonColors(
@@ -85,11 +90,23 @@ fun LoginScreen(onLoginSuccess: (String, String) -> Unit) {
             )) {
             Text(text = "Login")
         }
+
+        if(loginFailed) {
+            Text(
+                text = "Login failed. Please try again.",
+                color = Color.Red,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
     }
 
     LaunchedEffect(authViewModel.userId, authViewModel.token) {
-        if (authViewModel.userId != null && authViewModel.token != null) {
+        if (authViewModel.userId != null && authViewModel.token != null && didUserSignIn) {
             onLoginSuccess(authViewModel.userId!!, authViewModel.token!!)
+        } else {
+            if(didUserSignIn) {
+                loginFailed = true
+            }
         }
     }
 }
