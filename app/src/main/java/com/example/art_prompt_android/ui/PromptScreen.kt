@@ -38,11 +38,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.art_prompt_android.ui.viewmodel.PromptViewModel
 import com.example.art_prompt_android.ui.viewmodel.PromptViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.art_prompt_android.R
 import com.example.art_prompt_android.utils.savePhotoToMediaStore
 import kotlinx.coroutines.launch
 
@@ -129,9 +134,12 @@ fun PromptScreen(userId: String,
             Text(
                 text = dayPrompt ?: "Generating prompt...",
                 style = MaterialTheme.typography.bodyLarge.copy(
-                    fontSize = 18.sp,
-                    color = customPrimaryColor
-                )
+                    fontSize = 24.sp,
+                    color = customPrimaryColor,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily(Font(R.font.frederick_the_great))
+                ),
+                modifier = Modifier.padding(16.dp)
             )
         }
     }
